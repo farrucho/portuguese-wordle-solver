@@ -1,2 +1,2 @@
 # portuguese-wordle-solver
-# 25:57 gct
+# - prevenir palavras com acentos

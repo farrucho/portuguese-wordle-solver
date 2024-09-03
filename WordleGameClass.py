@@ -6,12 +6,11 @@ class WordleGame:
         self.secretWord = secretWord
         self.board = np.array([['',0],['',0],['',0],['',0],['',0]]) # (char,colorcode) 0-grey 1-yellow 2-green
         self.lifes = 6
-
     
 
     def play_game(self) -> None: # true se ganhou falso se perdeu
         print("◻ ◻ ◻ ◻ ◻")
-        
+
         while not self.isGameOver():
             wordTry = input("manda adivinha\n")
             self.guess_word(wordTry)
