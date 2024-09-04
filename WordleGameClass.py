@@ -3,26 +3,23 @@ from termcolor import colored, cprint
 
 class WordleGame:
     def __init__(self, secretWord):
-        self.secretWord = secretWord
+        self.secretWord = secretWord.upper()
         self.board = np.array([['',0],['',0],['',0],['',0],['',0]]) # (char,colorcode) 0-grey 1-yellow 2-green
         self.lifes = 6
     
 
-    def play_game(self) -> None: # true se ganhou falso se perdeu
-        print("◻ ◻ ◻ ◻ ◻")
-
+    def play_game(self) -> None:
         while not self.isGameOver():
             wordTry = input("manda adivinha\n")
             self.guess_word(wordTry)
             self.printBoard()
-            self.lifes = self.lifes - 1
 
         if self.isWin(): print("gg")
 
 
-
     def guess_word(self, word) -> None:
-        self.board[:,0] = list(word)
+        self.lifes = self.lifes - 1
+        self.board[:,0] = list(word.upper())
         for index,char in enumerate(self.board[:,0]):
             if char in self.secretWord:
                 if char == self.secretWord[index]:

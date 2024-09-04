@@ -4,8 +4,15 @@ from GameUI import MainWindow
 from PyQt6.QtWidgets import QApplication
 import sys
 
-#game = WordleGame("homem")
-# game = WordleGame("moeda")
+
+game = WordleGame("homem")
+
+app = QApplication(sys.argv)
+
+window = MainWindow(game)
+window.show()
+
+window.startGame()
 
 
 # game.guess_word("termo")
@@ -19,8 +26,6 @@ import sys
 # game.guess_word("homem")
 # game.printBoard()
 
-app = QApplication(sys.argv)
 
-window = MainWindow()
-window.show()
 
+# window.draw_grid_line(0)
