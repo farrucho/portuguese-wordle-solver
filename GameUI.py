@@ -61,12 +61,14 @@ class MainWindow(QMainWindow):
                 return j
         return None
 
+
     def stop_game(self):
         print("gg")
         if self.game.isWin():
             print(f"numero tentativas: {6-self.game.lifes}")
         else:
             print(f"a palavra era: {self.game.secretWord}")
+
 
     def keyPressEvent(self, keyEvent):
         currentRowIndex = self.grid_layout_inputs.rowCount() - 1
@@ -82,7 +84,6 @@ class MainWindow(QMainWindow):
                     self.grid_layout_inputs.removeWidget(self.grid_layout_inputs.itemAtPosition(currentRowIndex,j).widget())
                 
                 self.game.guess_word(currentStr)
-                print(self.game.board)
                 self.draw_grid_line(currentRowIndex,self.game.board)
                 
                 if not self.game.isGameOver():
@@ -134,24 +135,6 @@ class MainWindow(QMainWindow):
             self.textEditor.insertPlainText(rowOfBoard[c,0])
             self.textEditor.move(c*70+90,10+rowIndex*70)
             self.textEditor.resize(65,65)
-            self.textEditor.setStyleSheet(f"font-weight: 600;font-family: 'Mitr', sans-serif;color: #FAFAFF;font-size:45px;margin:0;border:0;background-color: {colorDict[rowOfBoard[c,1]]};border-radius:10%")
+            self.textEditor.setStyleSheet(f"font-weight: 900;font-family: 'Mitr', sans-serif;color: #FAFAFF;font-size:40px;margin:0;border:0;background-color: {colorDict[rowOfBoard[c,1]]};border-radius:10%")
             self.textEditor.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             self.grid_layout_inputs.addWidget(self.textEditor,rowIndex,c)
-
-
-
-    # def draw_line(self):
-    #     row_layout = QHBoxLayout()
-    #     self.main_layout.addLayout(row_layout)
-
-    #     row_layout.setSpacing(0)
-    #     row_layout.setContentsMargins(0, 0, 0, 0)
-        
-    #     for _ in range(5):
-    #         square_label = QLabel()
-    #         square_label.setFixedSize(50, 50)  # Set size to make it a square
-    #         square_label.setStyleSheet("background-color: white; margin:0; padding:0")
-    #         row_layout.addWidget(square_label)
-
-
-

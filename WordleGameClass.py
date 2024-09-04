@@ -31,8 +31,6 @@ class WordleGame:
             continue
 
 
-
-    # game booleans and get properties:
     def printBoard(self) -> None:
         colorDict = {
             '0':"grey",
@@ -47,6 +45,7 @@ class WordleGame:
 
     def isGameOver(self) -> bool:
         return (''.join(map(str, self.board[:,0])) == self.secretWord or self.lifes == 0)
+
 
     def isWin(self) -> bool:
         return ''.join(map(str, self.board[:,0])) == self.secretWord
