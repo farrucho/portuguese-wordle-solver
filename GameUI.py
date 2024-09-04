@@ -2,6 +2,7 @@ from PyQt6 import QtCore
 from PyQt6.QtWidgets import QMainWindow,QVBoxLayout, QWidget, QLabel,QHBoxLayout,QPlainTextEdit,QFrame,QTextEdit,QGridLayout
 from WordleGameClass import WordleGame
 import numpy as np
+from unidecode import unidecode
 
 class LimitedPlainTextEdit(QTextEdit):
     def __init__(self, *args, **kwargs):
@@ -9,12 +10,12 @@ class LimitedPlainTextEdit(QTextEdit):
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
 
-    def keyPressEvent(self, event):
-        if len(self.toPlainText()) < 1 or event.key() in [QtCore.Qt.Key.Key_Backspace, QtCore.Qt.Key.Key_Delete]:
-            # super().keyPressEvent(event)
-            event.ignore()
-        else:
-            event.ignore()
+    # def keyPressEvent(self, event):
+    #     if len(self.toPlainText()) < 1 or event.key() in [QtCore.Qt.Key.Key_Backspace, QtCore.Qt.Key.Key_Delete]:
+    #         # super().keyPressEvent(event)
+    #         event.ignore()
+    #     else:
+    #         event.ignore()
     
     
     # meter primeiro teclado funcional or len(self.textCursor().selectedText())>0
@@ -49,6 +50,7 @@ class MainWindow(QMainWindow):
         self.main_layout = QVBoxLayout(central_widget) 
         
         self.game = wordleGame
+        self.game.set_window(self) 
 
     def startGame(self):
         self.draw_grid()
@@ -64,6 +66,7 @@ class MainWindow(QMainWindow):
 
     def stop_game(self):
         print("gg")
+        print(self.game.attempts)
         if self.game.isWin():
             print(f"numero tentativas: {6-self.game.lifes}")
         else:
@@ -81,15 +84,17 @@ class MainWindow(QMainWindow):
                 currentStr = ""
                 for j in range(0,5):
                     currentStr += (self.grid_layout_inputs.itemAtPosition(currentRowIndex,j).widget().toPlainText())
-                    self.grid_layout_inputs.removeWidget(self.grid_layout_inputs.itemAtPosition(currentRowIndex,j).widget())
+
+                if(self.game.guess_word(currentStr) == True):
+                    for j in range(0,5):
+                        self.grid_layout_inputs.removeWidget(self.grid_layout_inputs.itemAtPosition(currentRowIndex,j).widget())
                 
-                self.game.guess_word(currentStr)
-                self.draw_grid_line(currentRowIndex,self.game.board)
-                
-                if not self.game.isGameOver():
-                    self.draw_grid_line(currentRowIndex+1)
-                else:
-                    self.stop_game()
+                    self.draw_grid_line(currentRowIndex,self.game.board)
+                    
+                    if not self.game.isGameOver():
+                        self.draw_grid_line(currentRowIndex+1)
+                    else:
+                        self.stop_game()
 
             elif keyEvent.key() in [QtCore.Qt.Key.Key_Backspace, QtCore.Qt.Key.Key_Delete]:
                 if firstEmptyTileIndex == None:
@@ -100,7 +105,7 @@ class MainWindow(QMainWindow):
 
             elif 64 < keyEvent.key() < 91:
                 if firstEmptyTileIndex != None:
-                    self.grid_layout_inputs.itemAtPosition(currentRowIndex,firstEmptyTileIndex).widget().setPlainText(str(keyEvent.text()).upper())
+                    self.grid_layout_inputs.itemAtPosition(currentRowIndex,firstEmptyTileIndex).widget().setPlainText(unidecode(str(keyEvent.text()).upper()))
                     self.grid_layout_inputs.itemAtPosition(currentRowIndex,firstEmptyTileIndex).widget().setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
 
@@ -120,7 +125,6 @@ class MainWindow(QMainWindow):
 
     def draw_grid_line(self,rowIndex,rowOfBoard=np.array([['',0],['',0],['',0],['',0],['',0]])):
         # rowOfBoard tem que ser do tipo do gameboard, array2d com char e cores
-        
         self.grid_layout_inputs = QGridLayout()
         self.main_layout.addChildLayout(self.grid_layout_inputs)
         

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QApplication
 import sys
 
 
-game = WordleGame("homem")
+game = WordleGame("útero")
 
 app = QApplication(sys.argv)
 
