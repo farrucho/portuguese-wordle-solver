@@ -1,8 +1,10 @@
-from PyQt6 import QtCore
+from PyQt6 import QtCore,QtTest
 from PyQt6.QtWidgets import QMainWindow,QVBoxLayout, QWidget, QLabel,QHBoxLayout,QPlainTextEdit,QFrame,QTextEdit,QGridLayout
 from WordleGameClass import WordleGame
 import numpy as np
 from unidecode import unidecode
+from BruteForceWordle import BruteForceWordle
+import time
 
 class LimitedPlainTextEdit(QTextEdit):
     def __init__(self, *args, **kwargs):
@@ -64,13 +66,14 @@ class MainWindow(QMainWindow):
         return None
 
 
-    def stop_game(self):
-        print("gg")
-        print(self.game.attempts)
-        if self.game.isWin():
-            print(f"numero tentativas: {6-self.game.lifes}")
-        else:
-            print(f"a palavra era: {self.game.secretWord}")
+    def stop_game(self,canOutput=True):
+        if canOutput:
+            print(self.game.attempts)
+            if self.game.isWin():
+                print(f"numero tentativas: {6-self.game.lifes}")
+            else:
+                print(f"a palavra era: {self.game.secretWord}")
+            print("gg")
 
 
     def keyPressEvent(self, keyEvent):
@@ -142,3 +145,18 @@ class MainWindow(QMainWindow):
             self.textEditor.setStyleSheet(f"font-weight: 900;font-family: 'Mitr', sans-serif;color: #FAFAFF;font-size:40px;margin:0;border:0;background-color: {colorDict[rowOfBoard[c,1]]};border-radius:10%")
             self.textEditor.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             self.grid_layout_inputs.addWidget(self.textEditor,rowIndex,c)
+
+
+    def startBruteForceGame(self,starterWord="termo",timer=0):
+        self.startGame()
+        bf_algorithm = BruteForceWordle(self.game)
+
+        self.game.guess_word(starterWord)
+        self.draw_grid_line(0,self.game.board)
+
+        while not self.game.isGameOver():
+            rowIndex = self.grid_layout_inputs.rowCount() - 1
+            self.game.guess_word(bf_algorithm.best_guess())
+            self.draw_grid_line(rowIndex+1,self.game.board)
+            QtTest.QTest.qWait(timer) # ver em tempo real no UI
+        self.stop_game(False)

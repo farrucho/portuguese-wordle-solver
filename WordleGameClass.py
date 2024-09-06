@@ -4,14 +4,13 @@ from unidecode import unidecode
 from WordleDictionary import WordleDictionary
 
 class WordleGame:
-    def __init__(self, secretWord):
+    def __init__(self, secretWord,dicionario=WordleDictionary()):
         self.secretWord = secretWord.upper()
         self.board = np.array([['',0],['',0],['',0],['',0],['',0]]) # (char,colorcode) 0-grey 1-yellow 2-green
         self.lifes = 6
-        self.dicionario = WordleDictionary()
+        self.dicionario = dicionario
         self.window = None
         self.attempts = []
-
 
     def set_window(self,window):
         self.window = window
@@ -30,7 +29,7 @@ class WordleGame:
         if self.isWin(): print("gg")
 
 
-    def guess_word(self, word) -> None:
+    def guess_word(self, word) -> bool: # bool caso word esteja noi dicionario
         # check if is valid word
         if unidecode(word).lower() in [unidecode(word) for word in self.dicionario.get_words()]:
             self.lifes = self.lifes - 1
@@ -67,6 +66,12 @@ class WordleGame:
         print("\n")
 
 
+    def get_board(self):
+        return self.board
+
+    def getDicionario(self):
+        return self.dicionario
+
     def getAttempts(self):
         return self.attempts
 
@@ -79,3 +84,4 @@ class WordleGame:
     
     def lifes(self) -> int:
         return self.lifes
+    
