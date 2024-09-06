@@ -1,4 +1,3 @@
 # portuguese-wordle-solver
-# - prevenir palavras com acentos
-# - adicionar alfabeto em baixo
-# - fazer algoritmos
+# - fazer mais algoritmos
+# - melhorar sintax e comments
