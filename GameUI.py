@@ -4,6 +4,7 @@ from WordleGameClass import WordleGame
 import numpy as np
 from unidecode import unidecode
 from BruteForceWordle import BruteForceWordle
+from EntropyWordle import Entropy
 import time
 
 class LimitedPlainTextEdit(QTextEdit):
@@ -147,16 +148,40 @@ class MainWindow(QMainWindow):
             self.grid_layout_inputs.addWidget(self.textEditor,rowIndex,c)
 
 
-    def startBruteForceGame(self,starterWord="termo",timer=0):
+    def startGameWithBruteForceAlgorithm(self,timer=0,starterWord="rasto"):
         self.startGame()
-        bf_algorithm = BruteForceWordle(self.game)
 
         self.game.guess_word(starterWord)
         self.draw_grid_line(0,self.game.board)
 
+        # self.game.dicionario.set_main_dicionario(BruteForceWordle(self.game,self.game.dicionario).getPossibleWords())
+        algorithm = BruteForceWordle(self.game)
+
         while not self.game.isGameOver():
             rowIndex = self.grid_layout_inputs.rowCount() - 1
-            self.game.guess_word(bf_algorithm.best_guess())
+            # algorithm = BruteForceWordle(self.game,self.game.dicionario)
+            self.game.guess_word(algorithm.best_guess())
+            # self.game.dicionario.set_main_dicionario(BruteForceWordle(self.game,self.game.dicionario).getPossibleWords())
+            self.draw_grid_line(rowIndex+1,self.game.board)
+            QtTest.QTest.qWait(timer) # ver em tempo real no UI
+        self.stop_game(False)
+
+    
+    def startGameWithEntropyAlgorithm(self,timer=0):
+        self.startGame()
+
+        self.game.guess_word("rasto")
+        self.draw_grid_line(0,self.game.board)
+
+        
+        # self.game.dicionario.set_main_dicionario(BruteForceWordle(self.game).getPossibleWords())
+
+        while not self.game.isGameOver():
+            algorithm = Entropy(self.game)
+            rowIndex = self.grid_layout_inputs.rowCount() - 1
+            # algorithm = Entropy(self.game.dicionario)
+            self.game.guess_word(algorithm.best_guess())
+            # self.game.dicionario.set_main_dicionario(BruteForceWordle(self.game).getPossibleWords())
             self.draw_grid_line(rowIndex+1,self.game.board)
             QtTest.QTest.qWait(timer) # ver em tempo real no UI
         self.stop_game(False)

@@ -1,3 +1,3 @@
 # portuguese-wordle-solver
-# - fazer mais algoritmos
-# - melhorar sintax e comments
+# melhorar sintax e comments
+# interface com botoes
