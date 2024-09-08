@@ -78,10 +78,12 @@ class WordleGame:
     def isGameOver(self) -> bool:
         return (''.join(map(str, self.board[:,0])) == self.secretWord or self.lifes == 0)
 
-
     def isWin(self) -> bool:
         return ''.join(map(str, self.board[:,0])) == self.secretWord
-    
+
+    def isLoss(self) -> bool:
+        return (''.join(map(str, self.board[:,0])) != self.secretWord and self.lifes == 0)
+
     def lifes(self) -> int:
         return self.lifes
     

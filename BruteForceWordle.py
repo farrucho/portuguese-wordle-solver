@@ -24,13 +24,14 @@ class BruteForceWordle:
             
             notpossibleChars = []
 
+            # este algoritmo analisa onde podem ou nao estar colocadas as letras amarelas 
             for attempt in attempts:
                 for collumn,(letter,index) in enumerate(attempt):
                     if index == '0' and not letter in notpossibleChars: notpossibleChars.append(str(letter))
                     if index == '1':
                         if unidecode(str(letter)).lower() in yellowCharsAnalysed:
                             try: # pode ja ter sido removido por isso é que está o try
-                                possibleWordleSolution[collumn].remove(str(letter))
+                                possibleWordleSolution[collumn].remove(str(letter).lower())
                             except:
                                 pass
                         else:
@@ -72,11 +73,11 @@ class BruteForceWordle:
                     # 3
                     if len([1 for char in list(yellowCharsAnalysed+[unidecode(chr(possibleWordleSolution[intIndex][0])).lower() for intIndex in intIndexes]) if not unidecode(char).lower() in unidecode(palavra).lower()]) == 0:
                         # 4
-                        if len([(col,char) for col,char in enumerate(palavra) if unidecode(char).lower() in yellowCharsAnalysed and not unidecode(char).lower() in possibleWordleSolution[col] and not col in intIndexes]) == 0: # ult serve para skippar green tiles ja checkadas
-                            # print(palavra,end=" PODE SER\n")
-                            possibleWords.append(palavra)
+                        if len([(col,char) for col,char in enumerate(palavra) if unidecode(char).lower() in yellowCharsAnalysed and not unidecode(char).lower() in possibleWordleSolution[col] and not col in intIndexes]) == 0: # ult condicao serve para skippar green tiles ja checkadas
+                                if not palavra in [''.join(map(str, attempt[:,0])).lower() for attempt in attempts]:
+                                    possibleWords.append(palavra)
             
-            print(possibleWords)
+            # print(possibleWords)
 
             return possibleWords
 
@@ -100,7 +101,8 @@ class BruteForceWordle:
         # print(f"palavras mais provaveis de ser: {mostProbableWords}")
         
         probabilities = mostProbableWords*80 + 20*possibleWords
-        # tambem previne caso mostprobableword=[] :)
+        # tambem previne caso mostprobableword=[]
+        # outra maneira seria com acesso a wordFreqCounts criar uma distribuição de probabilidade das palavras
         
         guess = random.choice(probabilities)
 

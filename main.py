@@ -4,12 +4,15 @@ from WordleDictionary import WordleDictionary
 from EntropyWordle import Entropy
 from GameUI import MainWindow
 from PyQt6.QtWidgets import QApplication
+import matplotlib.pyplot as plt
+import numpy as np
 import sys
+
+
 
 # -----------------------
 # USER PLAY NORMAL GAME
 # -----------------------
- 
 # game = WordleGame("homem")
 # app = QApplication(sys.argv)
 # window = MainWindow(game)
@@ -17,14 +20,20 @@ import sys
 # window.startGame()
 
 
+
+
 # -----------------------
 #   INFORMATION THEORY
 #   (melhor algoritmo)
 # -----------------------
-
 # Aprender qual é a melhor starterWord com Information Theory (no wordle-wordlist.txt)
 # o processo é igual para wordlist-big-latestUTF8.txt, mas é mais tedioso pois tem o dobro das palavras
-# A MELHOR PALAVRA É RASTO
+# Para a wordlist wordle-wordlist.txt, a melhor palavra é rasto
+# Pequena nota: 
+#   -   apesar de já se notar numa wordlist com 1000 palavras que information theory é mais eficiente,
+#       para wordlist maior, information theory tem +wins e em -tentativas
+
+
 # dicionario = WordleDictionary(filepath="./wordle-wordlist.txt")
 # dicionario.set_main_dicionario(dicionario.get_words())
 # e = Entropy(dicionario)
@@ -33,26 +42,61 @@ import sys
 
 
 # Podemos comparar como funcionam os dois da seguinte maneira:
+# app = QApplication(sys.argv)
+# dicionario = WordleDictionary(filepath="./wordle-wordlist.txt")
+# lista = dicionario.get_words()
 
-app = QApplication(sys.argv)
-dicionario = WordleDictionary(filepath="./wordlist-big-latestUTF8.txt")
-lista = dicionario.get_words()
+# entropy_data = [['1',0],['2',0],['3',0],['4',0],['5',0],['6',0],['loss',0]]
+# bruteforce_data = [['1',0],['2',0],['3',0],['4',0],['5',0],['6',0],['loss',0]]
+# # [number of tries, wins]
 
-for answerWord in lista[5:10]:
-    game = WordleGame(answerWord,dicionario)
-    window_entropy = MainWindow(game)
-    window_entropy.show()
-    window_entropy.setWindowTitle("ENTROPY")
-    window_entropy.startGameWithEntropyAlgorithm(timer=2000)
-    # window_entropy.close()
-    game = WordleGame(answerWord,dicionario)
-    window_bruteforce = MainWindow(game)
-    window_bruteforce.show()
-    window_bruteforce.setWindowTitle("BRUTE FORCE")
-    window_bruteforce.startGameWithBruteForceAlgorithm(timer=2000)
-    del game
-    del window_entropy
+# for index,answerWord in enumerate(lista):
+#     game1 = WordleGame(answerWord,dicionario)
+#     window_entropy = MainWindow(game1)
+#     # window_entropy.show()
+#     window_entropy.setWindowTitle("ENTROPY")
+#     window_entropy.startGameWithEntropyAlgorithm(timer=1000)
+#     # window_entropy.close()
 
+#     game2 = WordleGame(answerWord,dicionario)
+#     window_bruteforce = MainWindow(game2)
+#     # window_bruteforce.show()
+#     window_bruteforce.setWindowTitle("BRUTE FORCE")
+#     window_bruteforce.startGameWithBruteForceAlgorithm(timer=0)
+#     # window_bruteforce.close()
+    
+#     if game1.isWin(): entropy_data[6-game1.lifes-1][1] += 1 
+#     elif game1.isLoss():
+#         print(game1.secretWord)
+#         entropy_data[6][1] += 1
+    
+    
+#     if game2.isWin(): bruteforce_data[6-game1.lifes-1][1] += 1
+#     elif game2.isLoss(): bruteforce_data[6][1] += 1
+    
+#     print(f"{100*(index+1)/len(lista)} %")
+
+
+
+# plt.figure()
+# plt.bar(np.array(entropy_data)[:,0],np.array(entropy_data)[:,1].astype(int),align='center')
+# plt.xlabel('Number of Tries')
+# plt.ylabel('Win Frequency')
+# plt.title("Wordle Information Theory Média de Tentativas: " + str((int(entropy_data[0][0])*int(entropy_data[0][1])+int(entropy_data[1][0])*int(entropy_data[1][1])+int(entropy_data[2][0])*int(entropy_data[2][1])+int(entropy_data[3][0])*int(entropy_data[3][1])+int(entropy_data[4][0])*int(entropy_data[4][1])+int(entropy_data[5][0])*int(entropy_data[5][1]))/len(lista)))
+# plt.show()
+
+
+# plt.figure()
+# plt.bar(np.array(bruteforce_data)[:,0],np.array(bruteforce_data)[:,1].astype(int),align='center')
+# plt.xlabel('Number of Tries')
+# plt.ylabel('Win Frequency')
+# plt.title("Wordle Brute Force: Média de Tentativas: " + str((int(bruteforce_data[0][0])*int(bruteforce_data[0][1])+int(bruteforce_data[1][0])*int(bruteforce_data[1][1])+int(bruteforce_data[2][0])*int(bruteforce_data[2][1])+int(bruteforce_data[3][0])*int(bruteforce_data[3][1])+int(bruteforce_data[4][0])*int(bruteforce_data[4][1])+int(bruteforce_data[5][0])*int(bruteforce_data[5][1]))/len(lista)))
+# plt.show()
+
+# >>> print(entropy_data) 
+# [['1', 1], ['2', 123], ['3', 543], ['4', 278], ['5', 33], ['6', 6], ['loss', 0]]
+# >>> print(bruteforce_data) 
+# [['1', 1], ['2', 123], ['3', 543], ['4', 273], ['5', 32], ['6', 6], ['loss', 6]]
 
 
 
