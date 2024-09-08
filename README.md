@@ -16,13 +16,16 @@ Here're some of the project's best features:
 *   Found out the best starter words
 
 <h2>👓 Gallery</h2>
-![entropy_simulation](https://github.com/user-attachments/assets/ab7ac845-3505-4509-9605-0cab56141ccf)
 
-![win_rate_entropy](https://github.com/user-attachments/assets/705a766c-31bf-4088-b284-f3e797464f3f)
+<img src="https://github.com/user-attachments/assets/ab7ac845-3505-4509-9605-0cab56141ccf" width="300"/>
 
-![entropy_graph_top70_wordle-wordlist](https://github.com/user-attachments/assets/7d24face-56fb-462b-90b2-fc374d40e469)
 
-![win_rate_bruteforce](https://github.com/user-attachments/assets/a5a987a4-baf7-4d3f-8104-9b0268becd17)
+<img src="https://github.com/user-attachments/assets/705a766c-31bf-4088-b284-f3e797464f3f" width="700"/>
+
+
+<img src="https://github.com/user-attachments/assets/7d24face-56fb-462b-90b2-fc374d40e469"/>
+
+
 
 
 <h2>🍰 How to run the simulations:</h2>
