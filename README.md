@@ -25,6 +25,8 @@ Here're some of the project's best features:
 
 <img src="https://github.com/user-attachments/assets/7d24face-56fb-462b-90b2-fc374d40e469"/>
 
+<img src="https://github.com/user-attachments/assets/8837e0e2-8655-4c7e-85d7-814a0151e377"/>
+
 
 
 
